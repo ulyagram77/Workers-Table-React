@@ -1,32 +1,74 @@
+import { Component } from 'react';
 import './workers-list-item.css';
 
-const WorkersListItem = () => {
-    return (
-        <li className="list-group-item d-flex justify-content-between">
-            <span className="list-group-item-label">John Smith</span>
-            <input
-                type="text"
-                className="list-group-item-input"
-                defaultValue="1000$"
-            />
-            <div className="d-flex justify-content-center align-items-center">
-                <button
-                    type="button"
-                    className="btn-cookie btn-sm "
-                >
-                    <i className="fas fa-cookie"></i>
-                </button>
+class WorkersListItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            increase: false,
+            rise: false,
+        };
+    }
 
-                <button
-                    type="button"
-                    className="btn-trash btn-sm "
+    onIncrease = () => {
+        //деструктуризируем состояние для удобства и возвращаем измененное состояние
+        this.setState(({ increase }) => ({
+            increase: !increase,
+        }));
+    };
+
+    onRise = () => {
+        this.setState(({ rise }) => ({
+            rise: !rise,
+        }));
+    };
+
+    render() {
+        const { name, salary } = this.props;
+        //тк нам теперь не важно что приходит в повышение из пропсов мы создаем отдельную переменную именно из состояния
+        const { increase, rise } = this.state;
+        //использование динамического класса который запишется в переменную
+        let classNames = 'list-group-item d-flex justify-content-between';
+        if (increase) {
+            classNames += ' increase';
+        }
+        if (rise) {
+            classNames += ' like';
+        }
+
+        return (
+            <li className={classNames}>
+                <span
+                    onClick={this.onRise}
+                    className="list-group-item-label"
                 >
-                    <i className="fas fa-trash"></i>
-                </button>
-                <i className="fas fa-star"></i>
-            </div>
-        </li>
-    );
-};
+                    {name}
+                </span>
+                <input
+                    type="text"
+                    className="list-group-item-input"
+                    defaultValue={salary + '$'}
+                />
+                <div className="d-flex justify-content-center align-items-center">
+                    <button
+                        type="button"
+                        className="btn-cookie btn-sm "
+                        onClick={this.onIncrease}
+                    >
+                        <i className="fas fa-cookie"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="btn-trash btn-sm "
+                    >
+                        <i className="fas fa-trash"></i>
+                    </button>
+                    <i className="fas fa-star"></i>
+                </div>
+            </li>
+        );
+    }
+}
 
 export default WorkersListItem;
