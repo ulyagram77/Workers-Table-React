@@ -2,7 +2,7 @@ import WorkersListItem from '../workers-list-item/workers-list-item';
 
 import './workers-list.css';
 
-const WorkersList = ({ data }) => {
+const WorkersList = ({ data, onDelete }) => {
     //вернет массив компонентов сформированых из приходящего обьекта данных
     const elements = data.map((item) => {
         //частичная деструктуризация
@@ -11,6 +11,7 @@ const WorkersList = ({ data }) => {
             <WorkersListItem
                 key={id}
                 {...itemProps}
+                onDelete={() => onDelete(id)}
             />
         );
     });

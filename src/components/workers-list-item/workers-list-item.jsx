@@ -24,7 +24,7 @@ class WorkersListItem extends Component {
     };
 
     render() {
-        const { name, salary } = this.props;
+        const { name, salary, onDelete } = this.props;
         //тк нам теперь не важно что приходит в повышение из пропсов мы создаем отдельную переменную именно из состояния
         const { increase, rise } = this.state;
         //использование динамического класса который запишется в переменную
@@ -61,6 +61,7 @@ class WorkersListItem extends Component {
                     <button
                         type="button"
                         className="btn-trash btn-sm "
+                        onClick={onDelete}
                     >
                         <i className="fas fa-trash"></i>
                     </button>
