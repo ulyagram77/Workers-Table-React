@@ -15,10 +15,34 @@ class App extends Component {
         //массив с данными которые как бы приходят из сервера записанные в состояние
         this.state = {
             data: [
-                { name: 'Danny', salary: 800, increase: true, id: 1 },
-                { name: 'Vladik', salary: 900, increase: false, id: 2 },
-                { name: 'Andrew', salary: 1000, increase: true, id: 3 },
-                { name: 'Jack', salary: 200, increase: false, id: 4 },
+                {
+                    name: 'Danny',
+                    salary: 800,
+                    rise: true,
+                    increase: true,
+                    id: 1,
+                },
+                {
+                    name: 'Vladik',
+                    salary: 900,
+                    rise: false,
+                    increase: false,
+                    id: 2,
+                },
+                {
+                    name: 'Andrew',
+                    salary: 1000,
+                    rise: false,
+                    increase: true,
+                    id: 3,
+                },
+                {
+                    name: 'Jack',
+                    salary: 200,
+                    rise: false,
+                    increase: false,
+                    id: 4,
+                },
             ],
         };
     }
@@ -48,6 +72,7 @@ class App extends Component {
             name,
             salary,
             increase: false,
+            rise: false,
             id: uuidv4(),
         };
         this.setState(({ data }) => {
@@ -58,10 +83,46 @@ class App extends Component {
         });
     };
 
+    onToggleProp = (id, prop) => {
+        //первый метод поменять состояние
+        // this.setState(({ data }) => {
+        //     // const index = data.findIndex((elem) => elem.id === id);
+        //     // const old = data[index];
+        //     // const newItem = { ...old, increase: !old.increase };
+        //     // const newArr = [
+        //     //     ...data.slice(0, index),
+        //     //     newItem,
+        //     //     ...data.slice(index + 1),
+        //     // ];
+        //     // return {
+        //     //     data: newArr,
+        //     // };
+        // });
+        //второй оптимизированый метод
+        this.setState(({ data }) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        [prop]: !item[prop],
+                    };
+                }
+                return item;
+            }),
+        }));
+    };
+
     render() {
+        const allWorkersSum = this.state.data.length;
+        const increasedWorkersSum = this.state.data.filter(
+            (item) => item.increase,
+        ).length;
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo
+                    workers={allWorkersSum}
+                    increased={increasedWorkersSum}
+                />
                 <div className="search-panel">
                     <SearchPanel />
                     <AppFilter />
@@ -69,6 +130,7 @@ class App extends Component {
                 <WorkersList
                     data={this.state.data}
                     onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp}
                 />
                 <WorkersAddForm onAdd={this.addItem} />
             </div>

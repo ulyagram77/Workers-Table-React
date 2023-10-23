@@ -4,29 +4,11 @@ import './workers-list-item.css';
 class WorkersListItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            increase: false,
-            rise: false,
-        };
     }
 
-    onIncrease = () => {
-        //деструктуризируем состояние для удобства и возвращаем измененное состояние
-        this.setState(({ increase }) => ({
-            increase: !increase,
-        }));
-    };
-
-    onRise = () => {
-        this.setState(({ rise }) => ({
-            rise: !rise,
-        }));
-    };
-
     render() {
-        const { name, salary, onDelete } = this.props;
-        //тк нам теперь не важно что приходит в повышение из пропсов мы создаем отдельную переменную именно из состояния
-        const { increase, rise } = this.state;
+        const { name, salary, onDelete, onToggleProp, increase, rise } =
+            this.props;
         //использование динамического класса который запишется в переменную
         let classNames = 'list-group-item d-flex justify-content-between';
         if (increase) {
@@ -39,8 +21,9 @@ class WorkersListItem extends Component {
         return (
             <li className={classNames}>
                 <span
-                    onClick={this.onRise}
+                    onClick={onToggleProp}
                     className="list-group-item-label"
+                    data-toggle="rise"
                 >
                     {name}
                 </span>
@@ -53,7 +36,8 @@ class WorkersListItem extends Component {
                     <button
                         type="button"
                         className="btn-cookie btn-sm "
-                        onClick={this.onIncrease}
+                        onClick={onToggleProp}
+                        data-toggle="increase"
                     >
                         <i className="fas fa-cookie"></i>
                     </button>
