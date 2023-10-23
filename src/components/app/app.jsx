@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import AppInfo from '../app-info/app-info';
 import SearchPanel from '../search-panel/search-panel';
@@ -23,16 +24,34 @@ class App extends Component {
     }
 
     //этот метод из компонента App будет передан через пропсы в компонент WorkersListItem
+    //тк нам нельзя напрямую менять состояние этот метод обязан создавать новый отфльтрованый массив без удаленного елемента
     deleteItem = (id) => {
         this.setState(({ data }) => {
-            const index = data.findIndex((dataElem) => dataElem.id === id);
-            //скопирует все елементы массива в переменную от начального елемента до елемента на котором кликнули удаление
-            const before = data.slice(0, index);
-            //скопирует все елементы массива в переменную которые идут после найденого елемента по индексу
-            const after = data.slice(index + 1);
-            //создаем новый массив без удаленного елемента
-            const newArr = [...before, ...after];
+            // const index = data.findIndex((dataElem) => dataElem.id === id);
+            // //скопирует все елементы массива в переменную от начального елемента до елемента на котором кликнули удаление
+            // const before = data.slice(0, index);
+            // //скопирует все елементы массива в переменную которые идут после найденого елемента по индексу
+            // const after = data.slice(index + 1);
+            // //создаем новый массив без удаленного елемента
+            // const newArr = [...before, ...after];
+
             //возвращаем состояние
+            return {
+                //метод фильтра вернет новый массив
+                data: data.filter((item) => item.id !== id),
+            };
+        });
+    };
+
+    addItem = (name, salary) => {
+        const newItem = {
+            name,
+            salary,
+            increase: false,
+            id: uuidv4(),
+        };
+        this.setState(({ data }) => {
+            const newArr = [...data, newItem];
             return {
                 data: newArr,
             };
@@ -51,7 +70,7 @@ class App extends Component {
                     data={this.state.data}
                     onDelete={this.deleteItem}
                 />
-                <WorkersAddForm />
+                <WorkersAddForm onAdd={this.addItem} />
             </div>
         );
     }
