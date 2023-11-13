@@ -44,21 +44,20 @@ class App extends Component {
                     id: 4,
                 },
             ],
+            term: '',
         };
     }
 
-    //этот метод из компонента App будет передан через пропсы в компонент WorkersListItem
-    //тк нам нельзя напрямую менять состояние этот метод обязан создавать новый отфльтрованый массив без удаленного елемента
+    /**
+     * Метод deleteItem
+     *
+     * Удаляет елемент из обьекта данных на котором была нажата кнопка удаления.
+     * Этот метод из компонента App будет передан через пропсы в компонент WorkersListItem
+     * @param {number} id идентификатор елемента.
+     * @returns {Array<Object>} Новый массив елементов без удаленного елемента.
+     */
     deleteItem = (id) => {
         this.setState(({ data }) => {
-            // const index = data.findIndex((dataElem) => dataElem.id === id);
-            // //скопирует все елементы массива в переменную от начального елемента до елемента на котором кликнули удаление
-            // const before = data.slice(0, index);
-            // //скопирует все елементы массива в переменную которые идут после найденого елемента по индексу
-            // const after = data.slice(index + 1);
-            // //создаем новый массив без удаленного елемента
-            // const newArr = [...before, ...after];
-
             //возвращаем состояние
             return {
                 //метод фильтра вернет новый массив
@@ -67,6 +66,15 @@ class App extends Component {
         });
     };
 
+    /**
+     * Метод addItem
+     *
+     * Добавляет новый елемент созданный пользователем в обьект данных.
+     *
+     * @param {string} name Имя работника.
+     * @param {string} salary Зарплата работника.
+     * @returns {Array<Object>} Новый массив с добавленными елементами(каждый елемент с уникальным id).
+     */
     addItem = (name, salary) => {
         const newItem = {
             name,
@@ -83,22 +91,16 @@ class App extends Component {
         });
     };
 
+    /**
+     * Метод onToggleProp
+     *
+     * Переключает значение свойства `prop` для элемента из приходящего обьекта даных с указанным идентификатором.
+     *
+     * @param {number} id Идентификатор элемента.
+     * @param {string} prop Имя свойства.
+     * @returns {Object} Новое состояние компонента.
+     */
     onToggleProp = (id, prop) => {
-        //первый метод поменять состояние
-        // this.setState(({ data }) => {
-        //     // const index = data.findIndex((elem) => elem.id === id);
-        //     // const old = data[index];
-        //     // const newItem = { ...old, increase: !old.increase };
-        //     // const newArr = [
-        //     //     ...data.slice(0, index),
-        //     //     newItem,
-        //     //     ...data.slice(index + 1),
-        //     // ];
-        //     // return {
-        //     //     data: newArr,
-        //     // };
-        // });
-        //второй оптимизированый метод
         this.setState(({ data }) => ({
             data: data.map((item) => {
                 if (item.id === id) {
@@ -112,11 +114,33 @@ class App extends Component {
         }));
     };
 
+    /**
+     * Метод searchWorker
+     *
+     * Ищет в массиве объектов элементы, соответствующие заданному поисковому запросу.
+     *
+     * @param {Array<Object>} items Массив объектов, в котором нужно искать элементы.
+     * @param {string} term Поисковой запрос.
+     * @returns {Array<Object>} Массив элементов, которые соответствуют поисковому запросу.
+     */
+    searchWorker = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter((item) => {
+            return item.name.indexOf(term) > -1;
+        });
+    };
+
     render() {
+        const { data, term } = this.state;
         const allWorkersSum = this.state.data.length;
         const increasedWorkersSum = this.state.data.filter(
             (item) => item.increase,
         ).length;
+        //массив отфильтрованных данных по строке которая вводится в инпут
+        const visibleData = this.searchWorker(data, term);
         return (
             <div className="app">
                 <AppInfo
@@ -128,7 +152,7 @@ class App extends Component {
                     <AppFilter />
                 </div>
                 <WorkersList
-                    data={this.state.data}
+                    data={visibleData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}
                 />
