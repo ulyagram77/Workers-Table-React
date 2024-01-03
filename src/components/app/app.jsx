@@ -133,6 +133,10 @@ class App extends Component {
         });
     };
 
+    onUpdateSearchField = (term) => {
+        this.setState({ term });
+    };
+
     render() {
         const { data, term } = this.state;
         const allWorkersSum = this.state.data.length;
@@ -148,7 +152,9 @@ class App extends Component {
                     increased={increasedWorkersSum}
                 />
                 <div className="search-panel">
-                    <SearchPanel />
+                    <SearchPanel
+                        onUpdateSearchField={this.onUpdateSearchField}
+                    />
                     <AppFilter />
                 </div>
                 <WorkersList
