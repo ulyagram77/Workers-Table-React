@@ -45,6 +45,7 @@ class App extends Component {
                 },
             ],
             term: '',
+            filter: '',
         };
     }
 
@@ -133,18 +134,36 @@ class App extends Component {
         });
     };
 
+    filterByMethod = (items, filter) => {
+        switch (filter) {
+            case 'rise':
+                return items.filter((item) => item.rise);
+            case 'moreThan1000':
+                return items.filter((item) => item.salary > 1000);
+            default:
+                return items;
+        }
+    };
+
     onUpdateSearchField = (term) => {
         this.setState({ term });
     };
 
+    onSelectFilter = (filter) => {
+        this.setState({ filter });
+    };
+
     render() {
-        const { data, term } = this.state;
+        const { data, term, filter } = this.state;
         const allWorkersSum = this.state.data.length;
         const increasedWorkersSum = this.state.data.filter(
             (item) => item.increase,
         ).length;
         //массив отфильтрованных данных по строке которая вводится в инпут
-        const visibleData = this.searchWorker(data, term);
+        const visibleData = this.filterByMethod(
+            this.searchWorker(data, term),
+            filter,
+        );
         return (
             <div className="app">
                 <AppInfo
@@ -155,7 +174,10 @@ class App extends Component {
                     <SearchPanel
                         onUpdateSearchField={this.onUpdateSearchField}
                     />
-                    <AppFilter />
+                    <AppFilter
+                        filter={filter}
+                        onSelectFilter={this.onSelectFilter}
+                    />
                 </div>
                 <WorkersList
                     data={visibleData}
