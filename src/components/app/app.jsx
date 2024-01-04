@@ -136,6 +136,19 @@ class App extends Component {
     };
 
     /**
+     * Метод **addDollar**
+     *
+     * Добавляет знак доллара в конец значения инпута, если его там еще нет.
+     *
+     * @param {Object} e - Обьект события
+     */
+    addDollar = (e) => {
+        if (e.target.value.slice(-1) !== '$') {
+            e.target.value += '$';
+        }
+    };
+
+    /**
      * Метод **changeSalary**
      *
      * Сохраняет введенную из интерфейса новую зарплату сотруднику в структуру данных.
@@ -257,6 +270,7 @@ class App extends Component {
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}
                     onChangeSalary={this.changeSalary}
+                    onAddDollar={this.addDollar}
                 />
                 <WorkersAddForm onAdd={this.addItem} />
             </div>

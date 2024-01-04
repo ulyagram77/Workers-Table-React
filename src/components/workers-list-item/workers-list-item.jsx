@@ -13,9 +13,12 @@ class WorkersListItem extends Component {
             onDelete,
             onToggleProp,
             onChangeSalary,
+            onAddDollar,
             increase,
             rise,
         } = this.props;
+
+        let salaryStr = salary + '$';
         //использование динамического класса который запишется в переменную
         let classNames = 'list-group-item d-flex justify-content-between';
         if (increase) {
@@ -35,10 +38,11 @@ class WorkersListItem extends Component {
                     {name}
                 </span>
                 <input
-                    type="number"
+                    type="text"
                     className="list-group-item-input"
-                    defaultValue={salary}
+                    defaultValue={salaryStr}
                     onChange={(e) => onChangeSalary(e.target.value, name)}
+                    onBlur={(e) => onAddDollar(e)}
                 />
                 <div className="d-flex justify-content-center align-items-center">
                     <button
