@@ -50,7 +50,7 @@ class App extends Component {
     }
 
     /**
-     * Метод deleteItem
+     * Метод **deleteItem**
      *
      * Удаляет елемент из обьекта данных на котором была нажата кнопка удаления.
      * Этот метод из компонента App будет передан через пропсы в компонент WorkersListItem
@@ -68,7 +68,7 @@ class App extends Component {
     };
 
     /**
-     * Метод addItem
+     * Метод **addItem**
      *
      * Добавляет новый елемент созданный пользователем в обьект данных.
      *
@@ -93,7 +93,7 @@ class App extends Component {
     };
 
     /**
-     * Метод onToggleProp
+     * Метод **onToggleProp**
      *
      * Переключает значение свойства `prop` для элемента из приходящего обьекта даных с указанным идентификатором.
      *
@@ -116,7 +116,7 @@ class App extends Component {
     };
 
     /**
-     * Метод searchWorker
+     * Метод **searchWorker**
      *
      * Ищет в массиве объектов элементы, соответствующие заданному поисковому запросу.
      *
@@ -134,6 +134,14 @@ class App extends Component {
         });
     };
 
+    /**
+     * Метод **filterByMethod**
+     *
+     * Проводит фильтрацию данных по заданному методу фильтрации.
+     * @param {Array<Object>} items
+     * @param {string} filter
+     * @returns {Array<Object>} Массив отфильтрованных данных.
+     */
     filterByMethod = (items, filter) => {
         switch (filter) {
             case 'rise':
