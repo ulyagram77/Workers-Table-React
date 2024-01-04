@@ -43,9 +43,52 @@ class App extends Component {
                     increase: false,
                     id: 4,
                 },
+                // Дополнительные объекты
+                {
+                    name: 'Alice',
+                    salary: 1200,
+                    rise: true,
+                    increase: false,
+                    id: 5,
+                },
+                {
+                    name: 'Bob',
+                    salary: 950,
+                    rise: true,
+                    increase: true,
+                    id: 6,
+                },
+                {
+                    name: 'Eva',
+                    salary: 850,
+                    rise: false,
+                    increase: false,
+                    id: 7,
+                },
+                {
+                    name: 'Max',
+                    salary: 1100,
+                    rise: true,
+                    increase: true,
+                    id: 8,
+                },
+                {
+                    name: 'Olivia',
+                    salary: 300,
+                    rise: false,
+                    increase: true,
+                    id: 9,
+                },
+                {
+                    name: 'Lucas',
+                    salary: 700,
+                    rise: true,
+                    increase: false,
+                    id: 10,
+                },
             ],
             term: '',
-            filter: '',
+            filter: 'all',
         };
     }
 
@@ -93,24 +136,21 @@ class App extends Component {
     };
 
     /**
-     * Метод **onToggleProp**
+     * Метод **changeSalary**
      *
-     * Переключает значение свойства `prop` для элемента из приходящего обьекта даных с указанным идентификатором.
+     * Сохраняет введенную из интерфейса новую зарплату сотруднику в структуру данных.
      *
-     * @param {number} id Идентификатор элемента.
-     * @param {string} prop Имя свойства.
-     * @returns {Object} Новое состояние компонента.
+     * @param {number} newSalary
+     * @param {string} name
+     * @returns {Array<Object>} Массив обьектов с новой зарплатой или старый массив елементов если зарплата не изменилась.
      */
-    onToggleProp = (id, prop) => {
+    changeSalary = (newSalary, name) => {
         this.setState(({ data }) => ({
-            data: data.map((item) => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        [prop]: !item[prop],
-                    };
+            data: data.map((person) => {
+                if (person.name === name) {
+                    return { ...person, salary: newSalary };
                 }
-                return item;
+                return person;
             }),
         }));
     };
@@ -148,9 +188,34 @@ class App extends Component {
                 return items.filter((item) => item.rise);
             case 'moreThan1000':
                 return items.filter((item) => item.salary > 1000);
+            case 'extra':
+                return items.filter((item) => item.increase);
             default:
                 return items;
         }
+    };
+
+    /**
+     * Метод **onToggleProp**
+     *
+     * Переключает значение свойства `prop` для элемента из приходящего обьекта даных с указанным идентификатором.
+     *
+     * @param {number} id Идентификатор элемента.
+     * @param {string} prop Имя свойства.
+     * @returns {Object} Новое состояние компонента.
+     */
+    onToggleProp = (id, prop) => {
+        this.setState(({ data }) => ({
+            data: data.map((item) => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        [prop]: !item[prop],
+                    };
+                }
+                return item;
+            }),
+        }));
     };
 
     onUpdateSearchField = (term) => {
@@ -191,6 +256,7 @@ class App extends Component {
                     data={visibleData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}
+                    onChangeSalary={this.changeSalary}
                 />
                 <WorkersAddForm onAdd={this.addItem} />
             </div>

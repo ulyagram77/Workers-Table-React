@@ -2,7 +2,7 @@ import WorkersListItem from '../workers-list-item/workers-list-item';
 
 import './workers-list.css';
 
-const WorkersList = ({ data, onDelete, onToggleProp }) => {
+const WorkersList = ({ data, onDelete, onToggleProp, onChangeSalary }) => {
     //вернет массив компонентов сформированых из приходящего обьекта данных
     const elements = data.map((item) => {
         //частичная деструктуризация
@@ -12,6 +12,7 @@ const WorkersList = ({ data, onDelete, onToggleProp }) => {
                 key={id}
                 {...itemProps}
                 onDelete={() => onDelete(id)}
+                onChangeSalary={onChangeSalary}
                 onToggleProp={(e) =>
                     onToggleProp(
                         id,
