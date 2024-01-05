@@ -11,7 +11,7 @@ Single Component Architecture
 Clone repo:
 
 ```bash
-https://github.com/ulyagram77/Workers-Table-React.git
+git clone https://github.com/ulyagram77/Workers-Table-React.git
 ```
 
 Move to repo folder:
